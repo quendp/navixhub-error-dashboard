@@ -1,0 +1,21 @@
+@use "./variables" as vars;
+@use "./mixins" as mixins;
+
+.errorWrapper {
+  @include mixins.flex(column, center, center, 2rem);
+  width: 100%;
+  min-height: 50vh;
+  color: vars.$dark-text;
+
+  button {
+    border: none;
+    background-color: vars.$dark-accent;
+    border-radius: 0.5rem;
+    padding: 0.7rem 1rem;
+
+    &:hover,
+    &:active {
+      background-color: vars.$dark-accent-100;
+    }
+  }
+}
