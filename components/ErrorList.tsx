@@ -1,6 +1,6 @@
 "use client";
 import { fetcher } from "@/utils/fetcher";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR from "swr";
 import styles from "@/styles/App.module.scss";
 import ErrorItems from "./ErrorItems";
@@ -21,7 +21,6 @@ const ErrorList = (): React.JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showDetails, setShowDetails] = useState(false);
   const [chosenError, setChosenError] = useState(1);
-  const [showLatest, setShowLatest] = useState(false);
   const { data, error, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_API}?page=${currentPage}`,
     fetcher
@@ -29,16 +28,13 @@ const ErrorList = (): React.JSX.Element => {
 
   const changePageHandler = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    if (pageNumber !== data.results.last_page) {
-      setShowLatest(false);
-    }
   };
 
-  const sortLatest = () => {
+  const onSortLatest = () => {
     setCurrentPage(data.results.last_page);
-    setShowLatest(true);
+    setChosenError((data.results.total % 25) - 1);
+    setShowDetails(true);
   };
-
   if (error) return <p>An error has occurred.</p>;
   if (isLoading)
     return (
@@ -46,10 +42,11 @@ const ErrorList = (): React.JSX.Element => {
         <Image src="/loader.svg" width={30} height={30} alt="loader image" />
       </p>
     );
+
   return (
     <>
       <div className={styles.listHeader}>
-        <SortItems sortLatest={sortLatest} />
+        <SortItems onSortLatest={onSortLatest} />
         <div>
           <span>Version: {data.version}</span>
           <span>Total Errors: {data.results.total}</span>
@@ -64,27 +61,15 @@ const ErrorList = (): React.JSX.Element => {
           <span>Time</span>
           <span></span>
         </li>
-        {!showLatest
-          ? data.results.data.map((errorItem: ErrorData, index: number) => (
-              <ErrorItems
-                key={errorItem.id}
-                index={index}
-                setShowDetails={setShowDetails}
-                setChosenError={setChosenError}
-                {...errorItem}
-              />
-            ))
-          : data.results.data
-              .reverse()
-              .map((errorItem: ErrorData, index: number) => (
-                <ErrorItems
-                  key={errorItem.id}
-                  index={index}
-                  setShowDetails={setShowDetails}
-                  setChosenError={setChosenError}
-                  {...errorItem}
-                />
-              ))}
+        {data.results.data.map((errorItem: ErrorData, index: number) => (
+          <ErrorItems
+            key={errorItem.id}
+            index={index}
+            setShowDetails={setShowDetails}
+            setChosenError={setChosenError}
+            {...errorItem}
+          />
+        ))}
       </ul>
       <Pagination
         changePageHandler={changePageHandler}

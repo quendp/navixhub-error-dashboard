@@ -1,8 +1,8 @@
 import styles from "@/styles/App.module.scss";
 
-const SortItems = ({ sortLatest }: any) => {
+const SortItems = ({ onSortLatest }: any) => {
   const onClickSort = () => {
-    sortLatest();
+    onSortLatest();
   };
 
   return (
