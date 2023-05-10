@@ -2,7 +2,7 @@
 import styles from "@/styles/Error.module.scss";
 import { useEffect } from "react";
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset,
 }: {
