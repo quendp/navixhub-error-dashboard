@@ -1,6 +1,6 @@
 "use client";
 import { fetcher } from "@/utils/fetcher";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import useSWR from "swr";
 import styles from "@/styles/App.module.scss";
 import ErrorItems from "./ErrorItems";
@@ -8,6 +8,7 @@ import SortItems from "./SortItems";
 import Pagination from "./Pagination";
 import ErrorDetails from "./ErrorDetails";
 import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface ErrorData {
   id: number;
@@ -18,7 +19,14 @@ interface ErrorData {
 }
 
 const ErrorList = (): React.JSX.Element => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams()!;
+
+  const page = searchParams.get("page");
+  const [currentPage, setCurrentPage] = useState(() =>
+    page && !isNaN(+page) ? page : 1
+  );
   const [showDetails, setShowDetails] = useState(false);
   const [chosenError, setChosenError] = useState(1);
   const { data, error, isLoading } = useSWR(
@@ -26,14 +34,32 @@ const ErrorList = (): React.JSX.Element => {
     fetcher
   );
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams as any);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const changePageHandler = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+    router.push(
+      pathname + "?" + createQueryString("page", pageNumber.toString())
+    );
   };
 
   const onSortLatest = () => {
-    setCurrentPage(data.results.last_page);
-    setChosenError((data.results.total % 25) - 1);
+    const lastItem = (data.results.total % 25) - 1;
+    const lastPage = data.results.last_page;
+    setCurrentPage(lastPage);
+    setChosenError(lastItem);
     setShowDetails(true);
+    router.push(
+      pathname + "?" + createQueryString("page", lastPage.toString())
+    );
   };
   if (error) return <p>An error has occurred.</p>;
   if (isLoading)

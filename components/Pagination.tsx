@@ -10,7 +10,7 @@ const Pagination = ({ changePageHandler, results }: any) => {
   };
 
   const onFirst = () => {
-    changePageHandler(results.first_page + 1);
+    changePageHandler(1);
   };
 
   const onLast = () => {
