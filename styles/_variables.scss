@@ -1,2 +1,21 @@
-$light-primary-clr: rgb(245, 239, 239);
-$test: red;
+// light mode
+$light-bg: rgb(255, 253, 253);
+
+//dark mode
+$dark-bg: rgb(20, 20, 20);
+$dark-bg-100: rgb(25, 25, 25);
+$dark-bg-200: rgb(35, 35, 35);
+$dark-text: rgb(235, 230, 230);
+$dark-text-100: rgb(228, 223, 223);
+$dark-accent: rgb(226, 188, 104);
+$dark-accent-100: rgb(199, 162, 83);
+
+//general styling
+$h1-fs: clamp(1rem, 3vw, 2rem);
+$overlay-bg: rgba(0, 0, 0, 0.5);
+
+// breakpoints
+$screen-sm-min: 576px;
+$screen-md-min: 768px;
+$screen-lg-min: 992px;
+$screen-xl-min: 1200px;

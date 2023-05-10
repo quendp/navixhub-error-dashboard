@@ -1,5 +1,211 @@
-@use "./variables" as var;
+@use "./variables" as vars;
+@use "./mixins" as mixins;
 
-.test {
-  color: var.$test;
+.mainContent {
+  @include mixins.flex(column);
+  color: vars.$dark-text;
+  gap: 3rem;
+
+  h1 {
+    color: vars.$dark-accent;
+    font-weight: 700;
+    font-size: vars.$h1-fs;
+    text-align: center;
+  }
+
+  .errorList {
+    @include mixins.flex(column, flex-start, stretch, 2rem);
+    background-color: vars.$dark-bg-200;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+
+    button {
+      border: none;
+      background-color: vars.$dark-accent;
+      border-radius: 0.5rem;
+      padding: 0.7rem 0;
+
+      &:hover,
+      &:active {
+        background-color: vars.$dark-accent-100;
+      }
+    }
+
+    .listHeader {
+      @include mixins.flex(column, center, center);
+      @include mixins.md {
+        @include mixins.flex(row, space-between, center);
+      }
+      padding: 0 1rem;
+
+      div {
+        @include mixins.flex(column, center, center);
+        margin: 0.8rem 0;
+        span {
+          margin: 0.3rem;
+          color: vars.$dark-accent;
+          background-color: vars.$dark-bg-100;
+          padding: 1rem;
+          border-radius: 0.7rem;
+        }
+
+        @include mixins.md {
+          @include mixins.flex(row, space-between, center);
+          margin: 0;
+          span {
+            margin: 1rem;
+          }
+        }
+      }
+
+      .sortButton {
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.5rem;
+      }
+    }
+
+    ul {
+      @include mixins.flex(column, center, stretch, 1rem);
+
+      .listLabels {
+        background-color: transparent;
+        color: vars.$dark-accent;
+        display: none;
+        padding: 0rem 0.8rem;
+
+        @include mixins.md {
+          display: flex;
+        }
+      }
+
+      li {
+        @include mixins.flex(column, stretch, center);
+
+        background-color: vars.$dark-bg-100;
+        padding: 1.5rem 0.8rem;
+        border-radius: 0.8rem;
+        flex: 1;
+
+        @include mixins.md {
+          @include mixins.flex(row, stretch, center);
+          padding: 1.5rem 1rem;
+        }
+
+        & > * {
+          width: 50%;
+          margin: 0.5rem 0;
+          @include mixins.md {
+            margin: 0;
+          }
+
+          &:nth-child(2),
+          &:nth-child(3) {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .paginationBtns {
+      @include mixins.flex(row, center, center, 0.7rem);
+      button {
+        padding: 0.3rem 0.5rem;
+
+        &:disabled {
+          background-color: vars.$dark-accent-100;
+        }
+      }
+
+      @include mixins.md {
+        @include mixins.flex(row, center, center, 1rem);
+        button {
+          padding: 0.8rem 1.3rem;
+        }
+      }
+    }
+
+    .errorDetails {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      min-height: 100vh;
+      background-color: vars.$overlay-bg;
+      backdrop-filter: blur(3px);
+      overflow-y: scroll;
+
+      @include mixins.flex(column, center, center);
+
+      .errorContent {
+        position: absolute;
+        top: 5rem;
+        background-color: vars.$dark-bg-100;
+        width: 90%;
+        max-width: 50rem;
+        padding: 2rem;
+        border-radius: 1rem;
+        text-align: start;
+        @include mixins.flex(column, stretch, stretch, 1rem);
+
+        .contentHeader {
+          @include mixins.flex(row, space-between, center);
+
+          span {
+            color: vars.$dark-accent;
+            background-color: vars.$dark-bg;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+          }
+        }
+
+        p {
+          color: vars.$dark-accent;
+
+          span {
+            color: vars.$dark-text;
+            margin-left: 0.2rem;
+          }
+        }
+
+        .contentColumn {
+          @include mixins.flex(column, center, stretch, 1rem);
+          @include mixins.md {
+            @include mixins.flex(row, center, stretch, 1rem);
+          }
+          flex: 1;
+
+          & > div {
+            width: 100%;
+            background-color: vars.$dark-bg;
+            border-radius: 0.5rem;
+            padding: 1rem;
+
+            p {
+              margin: 0.5rem 0;
+            }
+          }
+        }
+
+        .contentRow {
+          width: 100%;
+          background-color: vars.$dark-bg;
+          border-radius: 0.5rem;
+          padding: 1rem;
+
+          p {
+            margin: 0.5rem 0;
+          }
+
+          .contentErrorInfo {
+            color: vars.$dark-text;
+            white-space: pre-line;
+            overflow-wrap: break-word;
+            font-size: 0.9rem;
+            padding: 1rem;
+          }
+        }
+      }
+    }
+  }
 }
