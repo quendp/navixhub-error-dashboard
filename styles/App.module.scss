@@ -159,15 +159,6 @@
           }
         }
 
-        p {
-          color: vars.$dark-accent;
-
-          span {
-            color: vars.$dark-text;
-            margin-left: 0.2rem;
-          }
-        }
-
         .contentColumn {
           @include mixins.flex(column, center, stretch, 1rem);
           @include mixins.md {
@@ -204,6 +195,20 @@
             font-size: 0.9rem;
             padding: 1rem;
           }
+        }
+
+        p {
+          color: vars.$dark-accent;
+
+          span {
+            color: vars.$dark-text;
+            margin-left: 0.2rem;
+          }
+        }
+
+        button {
+          width: 5rem;
+          align-self: flex-end;
         }
       }
     }

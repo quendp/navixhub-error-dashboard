@@ -22,7 +22,7 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
     }
   }, [error.error_description]);
 
-  const onCloseDetails = (e: any) => {
+  const onCloseDetails = () => {
     setShowDetails(false);
   };
 
@@ -112,6 +112,7 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
             {errorDescription[0]?.errorInfo?.componentStack || "N/A"}
           </p>
         </div>
+        <button onClick={onCloseDetails}>Ok</button>
       </div>
     </div>
   );
