@@ -1,28 +1,38 @@
 import { fetcher } from "../utils/fetcher";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import ErrorItems from "./ErrorItems";
 import SortItems from "./SortItems";
 import Pagination from "./Pagination";
 import ErrorDetails from "./ErrorDetails";
-import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useReportsStore } from "../store/store";
 
 const ErrorList = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
   const page = searchParams.get("page");
   const [currentPage, setCurrentPage] = useState(() =>
     page && !isNaN(+page) ? page : 1
   );
+
   const [showDetails, setShowDetails] = useState(false);
-  const [chosenError, setChosenError] = useState(1);
-  const { data, error, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}?page=${currentPage}`,
-    fetcher
-  );
+  const [chosenReport, setChosenReport] = useState(1);
+
+  const reports = useReportsStore((state) => state.reports);
+  const setReports = useReportsStore((state) => state.setReports);
+
+  const {
+    data: fetchedReports,
+    error,
+    isLoading,
+  } = useSWR(`${process.env.NEXT_PUBLIC_API}?page=${currentPage}`, fetcher);
+
+  useEffect(() => {
+    setReports(fetchedReports);
+  }, [fetchedReports, setReports]);
 
   const createQueryString = useCallback(
     (name, value) => {
@@ -41,16 +51,19 @@ const ErrorList = () => {
     );
   };
 
-  const onSortLatest = () => {
-    const lastItem = (data.results.total % 25) - 1;
-    const lastPage = data.results.last_page;
+  const onGetLatest = () => {
+    const lastItem = (reports.results.total % 25) - 1;
+    const lastPage = reports.results.last_page;
     setCurrentPage(lastPage);
-    setChosenError(lastItem);
+    setChosenReport(lastItem);
     setShowDetails(true);
     router.push(
       pathname + "?" + createQueryString("page", lastPage.toString())
     );
   };
+  if (!reports) {
+    return <p>No reports found.</p>;
+  }
   if (error) return <p>An error has occurred.</p>;
   if (isLoading)
     return (
@@ -58,14 +71,14 @@ const ErrorList = () => {
         <Image src="/loader.svg" width={30} height={30} alt="loader image" />
       </p>
     );
-  console.log(data);
+  console.log("reports :", reports);
   return (
     <>
       <div className="listHeader">
-        <SortItems onSortLatest={onSortLatest} />
+        <SortItems onGetLatest={onGetLatest} />
         <div>
-          <span>Version: {data.version}</span>
-          <span>Total Errors: {data.results.total}</span>
+          <span>Version: {reports.version}</span>
+          <span>Total Errors: {reports.results.total}</span>
         </div>
       </div>
       <ul>
@@ -77,22 +90,22 @@ const ErrorList = () => {
           <span>Time</span>
           <span></span>
         </li>
-        {data.results.data.map((errorItem, index) => (
+        {reports.results.data.map((errorItem, index) => (
           <ErrorItems
             key={errorItem.id}
             index={index}
             setShowDetails={setShowDetails}
-            setChosenError={setChosenError}
+            setChosenReport={setChosenReport}
             {...errorItem}
           />
         ))}
       </ul>
       <Pagination
         changePageHandler={changePageHandler}
-        results={data.results}
+        results={reports.results}
       />
       <ErrorDetails
-        error={data.results.data[chosenError]}
+        errorReport={reports.results.data[chosenReport]}
         showDetails={showDetails}
         setShowDetails={setShowDetails}
       />

@@ -1,6 +1,6 @@
-const SortItems = ({ onSortLatest }) => {
+const SortItems = ({ onGetLatest }) => {
   const onClickSort = () => {
-    onSortLatest();
+    onGetLatest();
   };
 
   return (

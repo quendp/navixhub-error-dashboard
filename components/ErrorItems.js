@@ -8,7 +8,7 @@ const ErrorItems = ({
   created_at,
   deleted_at,
   setShowDetails,
-  setChosenError,
+  setChosenReport,
 }) => {
   const dateFormat = created_at.split("T");
   const timeFormat = dateFormat[1].split(":");
@@ -26,7 +26,7 @@ const ErrorItems = ({
 
   const onClickDetails = () => {
     setShowDetails(true);
-    setChosenError(index);
+    setChosenReport(index);
   };
 
   return (

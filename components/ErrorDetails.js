@@ -1,20 +1,20 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const ErrorDetails = ({ error, showDetails, setShowDetails }) => {
+const ErrorDetails = ({ errorReport, showDetails, setShowDetails }) => {
   const [errorDescription, setErrorDescription] = useState("");
 
-  const dateFormat = error.created_at.split("T");
+  const dateFormat = errorReport.created_at.split("T");
   const timeFormat = dateFormat[1].split(":");
 
   useEffect(() => {
     try {
-      const errorJson = JSON.parse(error.error_description);
+      const errorJson = JSON.parse(errorReport.error_description);
       setErrorDescription(errorJson);
     } catch (e) {
-      setErrorDescription(error.error_description);
+      setErrorDescription(errorReport.error_description);
     }
-  }, [error.error_description]);
+  }, [errorReport.error_description]);
 
   const onCloseDetails = () => {
     setShowDetails(false);
@@ -27,7 +27,7 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }) => {
     >
       <div className="errorContent">
         <div className="contentHeader">
-          <span>{error.id || "N/A"}</span>
+          <span>{errorReport.id || "N/A"}</span>
           <Image
             src="/xmark-solid-dark.svg"
             width={30}
