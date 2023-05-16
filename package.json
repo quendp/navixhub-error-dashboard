@@ -1,5 +1,5 @@
 {
-  "name": "error-reporting-dashboard",
+  "name": "navixhub-error-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,18 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "20.1.1",
-    "@types/react": "18.2.6",
-    "@types/react-dom": "18.2.4",
     "eslint": "8.40.0",
-    "eslint-config-next": "13.4.1",
-    "next": "13.4.1",
+    "eslint-config-next": "13.4.2",
+    "next": "13.4.2",
     "react": "18.2.0",
+    "react-bootstrap": "^2.7.4",
     "react-dom": "18.2.0",
+    "sass": "^1.62.1",
     "swr": "^2.1.5",
-    "typescript": "5.0.4"
-  },
-  "devDependencies": {
-    "sass": "^1.62.1"
+    "zustand": "^4.3.8"
   }
 }

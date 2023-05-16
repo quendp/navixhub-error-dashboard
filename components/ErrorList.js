@@ -1,8 +1,6 @@
-"use client";
-import { fetcher } from "@/utils/fetcher";
-import { useCallback, useRef, useState } from "react";
+import { fetcher } from "../utils/fetcher";
+import { useCallback, useState } from "react";
 import useSWR from "swr";
-import styles from "@/styles/App.module.scss";
 import ErrorItems from "./ErrorItems";
 import SortItems from "./SortItems";
 import Pagination from "./Pagination";
@@ -10,18 +8,10 @@ import ErrorDetails from "./ErrorDetails";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-interface ErrorData {
-  id: number;
-  error_description: any;
-  updated_at: string;
-  created_at: string;
-  deleted_at: string;
-}
-
-const ErrorList = (): React.JSX.Element => {
+const ErrorList = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams()!;
+  const searchParams = useSearchParams();
 
   const page = searchParams.get("page");
   const [currentPage, setCurrentPage] = useState(() =>
@@ -35,8 +25,8 @@ const ErrorList = (): React.JSX.Element => {
   );
 
   const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams as any);
+    (name, value) => {
+      const params = new URLSearchParams(searchParams);
       params.set(name, value);
 
       return params.toString();
@@ -44,7 +34,7 @@ const ErrorList = (): React.JSX.Element => {
     [searchParams]
   );
 
-  const changePageHandler = (pageNumber: number) => {
+  const changePageHandler = (pageNumber) => {
     setCurrentPage(pageNumber);
     router.push(
       pathname + "?" + createQueryString("page", pageNumber.toString())
@@ -68,10 +58,10 @@ const ErrorList = (): React.JSX.Element => {
         <Image src="/loader.svg" width={30} height={30} alt="loader image" />
       </p>
     );
-
+  console.log(data);
   return (
     <>
-      <div className={styles.listHeader}>
+      <div className="listHeader">
         <SortItems onSortLatest={onSortLatest} />
         <div>
           <span>Version: {data.version}</span>
@@ -79,7 +69,7 @@ const ErrorList = (): React.JSX.Element => {
         </div>
       </div>
       <ul>
-        <li className={styles.listLabels}>
+        <li className="listLabels">
           <span>No.</span>
           <span>Name</span>
           <span>Role</span>
@@ -87,7 +77,7 @@ const ErrorList = (): React.JSX.Element => {
           <span>Time</span>
           <span></span>
         </li>
-        {data.results.data.map((errorItem: ErrorData, index: number) => (
+        {data.results.data.map((errorItem, index) => (
           <ErrorItems
             key={errorItem.id}
             index={index}

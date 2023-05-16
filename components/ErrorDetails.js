@@ -1,14 +1,8 @@
-import styles from "@/styles/App.module.scss";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-interface DetailsProps {
-  showDetails: boolean;
-  setShowDetails: any;
-  error: any;
-}
-const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
-  const [errorDescription, setErrorDescription] = useState<any>("");
+const ErrorDetails = ({ error, showDetails, setShowDetails }) => {
+  const [errorDescription, setErrorDescription] = useState("");
 
   const dateFormat = error.created_at.split("T");
   const timeFormat = dateFormat[1].split(":");
@@ -29,10 +23,10 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
   return (
     <div
       style={{ display: showDetails ? "flex" : "none" }}
-      className={styles.errorDetails}
+      className="errorDetails"
     >
-      <div className={styles.errorContent}>
-        <div className={styles.contentHeader}>
+      <div className="errorContent">
+        <div className="contentHeader">
           <span>{error.id || "N/A"}</span>
           <Image
             src="/xmark-solid-dark.svg"
@@ -42,7 +36,7 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
             onClick={onCloseDetails}
           />
         </div>
-        <div className={styles.contentColumn}>
+        <div className="contentColumn">
           <div>
             <p>
               Name: <span>{errorDescription[0]?.name || "N/A"}</span>
@@ -64,7 +58,7 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
             </p>
           </div>
         </div>
-        <div className={styles.contentColumn}>
+        <div className="contentColumn">
           <div>
             <p>
               Clinician ID:{" "}
@@ -88,13 +82,9 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
             </p>
           </div>
         </div>
-        <div className={styles.contentRow}>
+        <div className="contentRow">
           <p>
-            Remarks:{" "}
-            <span>
-              {(typeof errorDescription === "object" && errorDescription[1]) ||
-                "N/A"}
-            </span>
+            Remarks: <span>{errorDescription[1] ?? "N/A"}</span>
           </p>
           <p>
             URL: <span>{errorDescription[0]?.url || "N/A"}</span>
@@ -106,9 +96,9 @@ const ErrorDetails = ({ error, showDetails, setShowDetails }: DetailsProps) => {
             Timezone: <span>{errorDescription[0]?.timezone || "N/A"}</span>
           </p>
         </div>
-        <div className={styles.contentRow}>
+        <div className="contentRow">
           <p>Error Info (Component Stack): </p>
-          <p className={styles.contentErrorInfo}>
+          <p className="contentErrorInfo">
             {errorDescription[0]?.errorInfo?.componentStack || "N/A"}
           </p>
         </div>

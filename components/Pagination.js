@@ -1,6 +1,4 @@
-import styles from "@/styles/App.module.scss";
-
-const Pagination = ({ changePageHandler, results }: any) => {
+const Pagination = ({ changePageHandler, results }) => {
   const onPrev = () => {
     changePageHandler(results.current_page - 1);
   };
@@ -18,15 +16,15 @@ const Pagination = ({ changePageHandler, results }: any) => {
   };
 
   return (
-    <div className={styles.paginationBtns}>
+    <div className="paginationBtns">
       <button disabled={results.prev_page_url ? false : true} onClick={onPrev}>
         Prev
       </button>
-      <button onClick={onFirst}>First</button>
+      <button onClick={onFirst}>1</button>
       <span>
         {results.current_page} / {results.last_page}
       </span>
-      <button onClick={onLast}>Last</button>
+      <button onClick={onLast}>{results.last_page}</button>
       <button disabled={results.next_page_url ? false : true} onClick={onNext}>
         Next
       </button>

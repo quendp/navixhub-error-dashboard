@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-interface ErrorData {
-  index: number;
-  id: number;
-  error_description: any;
-  updated_at: string;
-  created_at: string;
-  deleted_at: string;
-  setShowDetails: any;
-  setChosenError: any;
-}
 const ErrorItems = ({
   index,
   id,
@@ -19,11 +9,11 @@ const ErrorItems = ({
   deleted_at,
   setShowDetails,
   setChosenError,
-}: ErrorData) => {
+}) => {
   const dateFormat = created_at.split("T");
   const timeFormat = dateFormat[1].split(":");
 
-  const [errorDescription, setErrorDescription] = useState<any>("");
+  const [errorDescription, setErrorDescription] = useState("");
 
   useEffect(() => {
     try {
