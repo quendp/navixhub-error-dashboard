@@ -1,15 +1,7 @@
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const ErrorItems = ({
-  index,
-  id,
-  error_description,
-  updated_at,
-  created_at,
-  deleted_at,
-  setShowDetails,
-  setChosenReport,
-}) => {
+const ErrorItems = ({ id, error_description, created_at }) => {
   const dateFormat = created_at.split("T");
   const timeFormat = dateFormat[1].split(":");
 
@@ -24,11 +16,6 @@ const ErrorItems = ({
     }
   }, [error_description]);
 
-  const onClickDetails = () => {
-    setShowDetails(true);
-    setChosenReport(index);
-  };
-
   return (
     <li>
       <span> {id} </span>
@@ -39,7 +26,9 @@ const ErrorItems = ({
         {" "}
         {timeFormat[0]}:{timeFormat[1]}{" "}
       </span>
-      <button onClick={onClickDetails}>View Details</button>
+      <Link href={`/${id}`}>
+        <button>View Details</button>
+      </Link>
     </li>
   );
 };
