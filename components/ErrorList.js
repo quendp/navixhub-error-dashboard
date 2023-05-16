@@ -61,9 +61,6 @@ const ErrorList = () => {
       pathname + "?" + createQueryString("page", lastPage.toString())
     );
   };
-  if (!reports) {
-    return <p>No reports found.</p>;
-  }
   if (error) return <p>An error has occurred.</p>;
   if (isLoading)
     return (
@@ -71,6 +68,9 @@ const ErrorList = () => {
         <Image src="/loader.svg" width={30} height={30} alt="loader image" />
       </p>
     );
+  if (!reports) {
+    return <p>No reports found.</p>;
+  }
   console.log("reports :", reports);
   return (
     <>
