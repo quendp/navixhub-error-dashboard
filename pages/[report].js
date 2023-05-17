@@ -11,20 +11,30 @@ const Reports = () => {
   const router = useRouter();
   const id = router.query.report;
 
+  const [errorDescription, setErrorDescription] = useState("");
+
+  // get report based on the given url params
   const {
     data: errorReport,
     error,
     isLoading,
   } = useSWR(`${process.env.NEXT_PUBLIC_API}/${id}`, fetcher);
 
-  const [errorDescription, setErrorDescription] = useState("");
+  // get latest report for navigation data
+  const {
+    data: latestReport,
+    error: latestReportError,
+    isLoading: latestReportLoading,
+  } = useSWR(
+    `${process.env.NEXT_PUBLIC_API}?orderBy=id:desc&sizePerPage=1`,
+    fetcher
+  );
 
   useEffect(() => {
     if (errorReport) {
       try {
         const errorJson = JSON.parse(errorReport?.results?.error_description);
         setErrorDescription(errorJson);
-        console.log(errorJson);
       } catch (e) {
         setErrorDescription(errorReport?.results?.error_description);
       }
@@ -122,6 +132,25 @@ const Reports = () => {
             {errorDescription[0]?.errorInfo?.componentStack || "N/A"}
           </p>
         </div>
+        {!latestReportError && !latestReportLoading ? (
+          <div className="reportNavBtns">
+            <Link href={`/${+id === 1 ? id : +id - 1}`}>
+              <button disabled={+id === 1}> Prev </button>
+            </Link>
+            <Link
+              href={`/${
+                +latestReport.results.last_page === +id ? id : +id + 1
+              }`}
+            >
+              <button disabled={+latestReport.results.last_page === +id}>
+                {" "}
+                Next{" "}
+              </button>
+            </Link>
+          </div>
+        ) : (
+          " "
+        )}
       </div>
     </div>
   );

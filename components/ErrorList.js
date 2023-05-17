@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import ErrorItems from "./ErrorItems";
 import Pagination from "./Pagination";
-import { useReportsStore } from "../store/store";
+import { useReportsTableStore } from "../store/store";
 import Link from "next/link";
 
 const ErrorList = () => {
@@ -17,8 +17,8 @@ const ErrorList = () => {
     page && !isNaN(+page) ? page : 1
   );
 
-  const reports = useReportsStore((state) => state.reports);
-  const setReports = useReportsStore((state) => state.setReports);
+  const reports = useReportsTableStore((state) => state.reports);
+  const setReports = useReportsTableStore((state) => state.setReports);
 
   const {
     data: fetchedReports,

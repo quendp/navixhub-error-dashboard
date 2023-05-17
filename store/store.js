@@ -1,8 +1,9 @@
 import { create } from "zustand";
 
-const store = (set) => ({
+// Reports data with 25 or more items for ErrorList.js
+const reportsTableStore = (set) => ({
   reports: null,
   setReports: (action) => set((state) => ({ reports: action })),
 });
 
-export const useReportsStore = create(store);
+export const useReportsTableStore = create(reportsTableStore);
