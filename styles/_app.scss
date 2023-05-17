@@ -11,6 +11,7 @@
     background-color: vars.$dark-accent;
     border-radius: 0.5rem;
     padding: 0.7rem 0;
+    font-family: inherit;
 
     &:hover,
     &:active {
@@ -43,12 +44,18 @@
       }
       padding: 0 1rem;
 
-      a {
+      .sortList {
         width: 100%;
-        max-width: 10rem;
+        max-width: 20rem;
+        flex-wrap: wrap;
+        @include mixins.flex(row, center, center, 1rem);
 
-        button {
-          width: 100%;
+        select {
+          background-color: vars.$dark-accent;
+          padding: 0.8rem 2rem;
+          border-radius: 0.5rem;
+          font-family: inherit;
+          font-size: inherit;
         }
       }
 

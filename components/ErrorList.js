@@ -1,12 +1,11 @@
-import { fetcher } from "../utils/fetcher";
+import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import { useReportsTableStore } from "../store/store";
+import { fetcher } from "../utils/fetcher";
 import ErrorItems from "./ErrorItems";
 import Pagination from "./Pagination";
-import { useReportsTableStore } from "../store/store";
-import Link from "next/link";
 
 const ErrorList = () => {
   const router = useRouter();
@@ -17,6 +16,8 @@ const ErrorList = () => {
     page && !isNaN(+page) ? page : 1
   );
 
+  const [sortBy, setSortBy] = useState("id:desc");
+
   const reports = useReportsTableStore((state) => state.reports);
   const setReports = useReportsTableStore((state) => state.setReports);
 
@@ -25,7 +26,7 @@ const ErrorList = () => {
     error,
     isLoading,
   } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}?orderBy=id:desc&page=${currentPage}`,
+    `${process.env.NEXT_PUBLIC_API}?orderBy=${sortBy}&page=${currentPage}`,
     fetcher
   );
 
@@ -64,9 +65,17 @@ const ErrorList = () => {
   return (
     <>
       <div className="listHeader">
-        <Link href={`/${reports.results.total}`}>
-          <button className="sortButton">Show Latest</button>
-        </Link>
+        <div className="sortList">
+          <label htmlFor="sortList">Sort by:</label>
+          <select
+            name="sortList"
+            id="sortList"
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value={"id:desc"}>Latest First</option>
+            <option value={"id:asc"}>Oldest First</option>
+          </select>
+        </div>
         <div>
           <span>Version: {reports.version}</span>
           <span>Total Errors: {reports.results.total}</span>
@@ -74,7 +83,7 @@ const ErrorList = () => {
       </div>
       <ul>
         <li className="listLabels">
-          <span>No.</span>
+          <span>ID</span>
           <span>Name</span>
           <span>Role</span>
           <span>Date</span>
