@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "bootstrap": "^5.2.3",
+    "date-fns": "^2.30.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "next": "13.4.2",
     "react": "18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "18.2.0",
+    "react-select": "^5.7.3",
     "sass": "^1.62.1",
     "swr": "^2.1.5",
     "zustand": "^4.3.8"

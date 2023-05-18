@@ -50,16 +50,19 @@
         flex-wrap: wrap;
         @include mixins.flex(row, center, center, 1rem);
 
-        select {
-          background-color: vars.$dark-accent;
-          padding: 0.8rem 2rem;
-          border-radius: 0.5rem;
-          font-family: inherit;
-          font-size: inherit;
+        .sortListItem__control {
+          padding: 0.4rem 1rem;
+          border-radius: 0.7rem;
+          background-color: vars.$dark-bg-100;
+          border: 1px solid vars.$dark-accent;
+
+          .sortListItem__single-value {
+            color: vars.$dark-text;
+          }
         }
       }
 
-      div {
+      .listHeaderDetails {
         @include mixins.flex(column, center, center, 0.3rem);
         margin: 0.8rem 0;
         width: 100%;

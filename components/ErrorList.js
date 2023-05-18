@@ -6,6 +6,25 @@ import { useReportsTableStore } from "../store/store";
 import { fetcher } from "../utils/fetcher";
 import ErrorItems from "./ErrorItems";
 import Pagination from "./Pagination";
+import Select from "react-select";
+
+const sortOptions = [
+  { value: "id:desc", label: "Latest First" },
+  { value: "id:asc", label: "Oldest First" },
+];
+
+const sortStyles = {
+  option: (styles, { isFocused, isSelected }) => ({
+    ...styles,
+    backgroundColor: isFocused ? "rgb(35, 35, 35)" : "transparent",
+    color: isSelected ? "rgb(226, 188, 104)" : "rgb(235, 230, 230)",
+    ":active": {
+      ...styles[":active"],
+      color: "rgb(226, 188, 104)",
+    },
+  }),
+  menu: (styles) => ({ ...styles, backgroundColor: "rgb(25, 25, 25)" }),
+};
 
 const ErrorList = () => {
   const router = useRouter();
@@ -67,16 +86,25 @@ const ErrorList = () => {
       <div className="listHeader">
         <div className="sortList">
           <label htmlFor="sortList">Sort by:</label>
-          <select
+          <Select
+            className="sortListItem"
+            classNamePrefix="sortListItem"
+            defaultValue={sortOptions[0]}
+            isDisabled={false}
+            isLoading={false}
+            isClearable={false}
+            isRtl={false}
+            isSearchable={false}
             name="sortList"
-            id="sortList"
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value={"id:desc"}>Latest First</option>
-            <option value={"id:asc"}>Oldest First</option>
-          </select>
+            options={sortOptions}
+            styles={sortStyles}
+            onChange={(e) => {
+              setSortBy(e.value);
+              changePageHandler(1);
+            }}
+          />
         </div>
-        <div>
+        <div className="listHeaderDetails">
           <span>Version: {reports.version}</span>
           <span>Total Errors: {reports.results.total}</span>
         </div>
