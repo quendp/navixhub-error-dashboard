@@ -62,7 +62,7 @@ const Reports = () => {
       <div className="errorContent">
         <div className="contentHeader">
           <span>{errorReport.results?.id || "N/A"}</span>
-          <Link href={`/`}>
+          <Link href={`/reports`}>
             <button> Go back </button>
           </Link>
         </div>
@@ -134,11 +134,11 @@ const Reports = () => {
         </div>
         {!latestReportError && !latestReportLoading ? (
           <div className="reportNavBtns">
-            <Link href={`/${+id === 1 ? id : +id - 1}`}>
+            <Link href={`/reports/${+id === 1 ? id : +id - 1}`}>
               <button disabled={+id === 1}> Prev </button>
             </Link>
             <Link
-              href={`/${
+              href={`/reports/${
                 +latestReport.results.last_page === +id ? id : +id + 1
               }`}
             >

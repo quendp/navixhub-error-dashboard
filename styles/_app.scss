@@ -34,7 +34,7 @@
     text-align: center;
 
     button {
-      padding: 1rem 0;
+      padding: 0.5rem 0;
     }
 
     .listHeader {
@@ -51,10 +51,10 @@
         @include mixins.flex(row, center, center, 1rem);
 
         .sortListItem__control {
-          padding: 0.4rem 1rem;
+          padding: 0.6rem 1rem;
           border-radius: 0.7rem;
           background-color: vars.$dark-bg-100;
-          border: 1px solid vars.$dark-accent;
+          border: none;
 
           .sortListItem__single-value {
             color: vars.$dark-text;
@@ -76,7 +76,7 @@
         }
 
         @include mixins.md {
-          @include mixins.flex(row, space-between, center, 0.7rem);
+          @include mixins.flex(row, space-between, center, 2rem);
           margin: 0;
         }
       }
@@ -158,9 +158,8 @@
   }
 
   .errorContent {
-    background-color: vars.$dark-bg-100;
+    background-color: vars.$dark-bg-200;
     width: 90%;
-    max-width: 55rem;
     padding: 2rem;
     border-radius: 1rem;
     text-align: start;
@@ -171,7 +170,7 @@
 
       span {
         color: vars.$dark-accent;
-        background-color: vars.$dark-bg;
+        background-color: vars.$dark-bg-100;
         padding: 0.5rem 1rem;
         border-radius: 0.5rem;
       }
@@ -186,7 +185,7 @@
 
       & > div {
         width: 100%;
-        background-color: vars.$dark-bg;
+        background-color: vars.$dark-bg-100;
         border-radius: 0.5rem;
         padding: 1rem;
 
@@ -198,7 +197,7 @@
 
     .contentRow {
       width: 100%;
-      background-color: vars.$dark-bg;
+      background-color: vars.$dark-bg-100;
       border-radius: 0.5rem;
       padding: 1rem;
 
@@ -226,6 +225,58 @@
 
     .reportNavBtns {
       @include mixins.flex(row, flex-end, center, 1rem);
+    }
+  }
+}
+
+.sidebarWrapper {
+  height: fit-content;
+  @include mixins.lg {
+    position: sticky;
+    top: 0;
+  }
+}
+.sidebar {
+  background-color: vars.$dark-bg-200;
+  height: fit-content;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+
+  @include mixins.lg {
+    height: 100vh;
+    padding-top: 5rem;
+    border-radius: 0 1rem 1rem 0;
+  }
+
+  h2 {
+    color: vars.$dark-text;
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid vars.$dark-text-100;
+  }
+
+  & > div {
+    @include mixins.flex(column, center, center, 1rem);
+
+    a {
+      width: 100%;
+      border: none;
+      background-color: vars.$dark-bg-100;
+      border-radius: 0.5rem;
+      padding: 0.7rem 0;
+      font-family: inherit;
+      color: vars.$dark-accent-100;
+      text-decoration: none;
+      text-align: center;
+
+      &:hover,
+      &:active,
+      &.active {
+        border: 1px solid vars.$dark-accent-100;
+      }
     }
   }
 }

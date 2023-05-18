@@ -1,10 +1,9 @@
+import ErrorList from "@/components/ErrorList";
 import Head from "next/head";
-import Overview from "@/components/Overview";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export default function Home() {
+const Reports = () => {
   return (
     <>
       <Head>
@@ -17,8 +16,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${inter.className} mainContent`}>
-        <Overview />
+        <h1>Error Reports List</h1>
+        <section className="errorList">
+          <ErrorList />
+        </section>
       </main>
     </>
   );
-}
+};
+
+export default Reports;

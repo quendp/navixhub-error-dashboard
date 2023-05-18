@@ -24,7 +24,7 @@ const ErrorItems = ({ id, error_description, created_at }) => {
       <span> {errorDescription[0]?.role || "N/A"} </span>
       <span> {dateFormat} </span>
       <span>{timeFormat}</span>
-      <Link href={`/${id}`}>
+      <Link href={`/reports/${id}`}>
         <button>View Details</button>
       </Link>
     </li>
