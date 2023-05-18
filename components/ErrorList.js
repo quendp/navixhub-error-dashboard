@@ -2,7 +2,7 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
-import { useReportsTableStore } from "../store/store";
+import { useReportsTableStore, useSortListMethod } from "../store/store";
 import { fetcher } from "../utils/fetcher";
 import ErrorItems from "./ErrorItems";
 import Pagination from "./Pagination";
@@ -35,7 +35,8 @@ const ErrorList = () => {
     page && !isNaN(+page) ? page : 1
   );
 
-  const [sortBy, setSortBy] = useState("id:desc");
+  const sortBy = useSortListMethod((state) => state.sortMethod);
+  const setSortBy = useSortListMethod((state) => state.setSortMethod);
 
   const reports = useReportsTableStore((state) => state.reports);
   const setReports = useReportsTableStore((state) => state.setReports);
