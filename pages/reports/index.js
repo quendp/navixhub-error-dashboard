@@ -1,4 +1,4 @@
-import ErrorList from "@/components/ErrorList";
+import ErrorList from "@/components/pages/reports/ErrorList";
 import Head from "next/head";
 import { Inter } from "next/font/google";
 
