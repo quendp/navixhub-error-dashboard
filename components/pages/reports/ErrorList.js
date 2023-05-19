@@ -81,7 +81,7 @@ const ErrorList = () => {
   if (!reports) {
     return <p>No reports found.</p>;
   }
-  console.log(reports);
+
   return (
     <>
       <div className="listHeader">

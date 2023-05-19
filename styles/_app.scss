@@ -2,7 +2,7 @@
 @use "./mixins" as mixins;
 
 .mainContent {
-  @include mixins.flex(column);
+  @include mixins.flex(column, center, center);
   color: vars.$dark-text;
   gap: 1rem;
 
@@ -10,8 +10,9 @@
     border: none;
     background-color: vars.$dark-accent;
     border-radius: 0.5rem;
-    padding: 0.5rem 0;
+    padding: 0.8rem 0;
     font-family: inherit;
+    font-size: 0.9rem;
 
     &:hover,
     &:active {
@@ -28,6 +29,7 @@
 
   .errorList {
     @include mixins.flex(column, flex-start, stretch, 2rem);
+    width: 90%;
     background-color: vars.$dark-bg-100;
     padding: 2rem;
     border-radius: 1rem;
@@ -51,7 +53,7 @@
         @include mixins.flex(row, center, center, 1rem);
 
         .sortListItem__control {
-          padding: 0.6rem 1rem;
+          padding: 0.5rem 1rem;
           border-radius: 0.7rem;
           background-color: vars.$dark-bg-200;
           border: none;
@@ -66,11 +68,11 @@
         @include mixins.flex(column, center, center, 0.3rem);
         margin: 0.8rem 0;
         width: 100%;
-        max-width: 30rem;
+        max-width: 25rem;
         span {
           color: vars.$dark-accent;
           background-color: vars.$dark-bg-200;
-          padding: 1rem;
+          padding: 0.5rem;
           border-radius: 0.7rem;
           width: 100%;
         }
@@ -156,8 +158,8 @@
   }
 
   .errorContent {
-    background-color: vars.$dark-bg-100;
     width: 90%;
+    background-color: vars.$dark-bg-100;
     padding: 2rem;
     border-radius: 1rem;
     text-align: start;
@@ -233,55 +235,56 @@
     position: sticky;
     top: 0;
   }
-}
-.sidebar {
-  background-color: transparent;
-  height: fit-content;
-  width: 100%;
-  padding: 1rem 2rem;
-  border-radius: 1rem;
-  margin-bottom: 3rem;
 
-  @include mixins.lg {
-    background-color: vars.$dark-bg-100;
-    height: 100vh;
-    padding-top: 5rem;
-    border-radius: 0 2rem 2rem 0;
-    margin-bottom: 0;
-  }
-
-  h2 {
-    color: vars.$dark-text;
-    font-size: 1.5rem;
-    text-align: center;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid vars.$dark-bg-400;
+  .sidebar {
+    background-color: transparent;
+    height: fit-content;
+    width: 100%;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    margin-bottom: 3rem;
 
     @include mixins.lg {
-      padding-bottom: 3rem;
-      margin-bottom: 3rem;
+      background-color: vars.$dark-bg-100;
+      height: 100vh;
+      padding-top: 5rem;
+      border-radius: 0 2rem 2rem 0;
+      margin-bottom: 0;
     }
-  }
 
-  & > div {
-    @include mixins.flex(column, center, center, 1rem);
-
-    a {
-      width: 100%;
-      border: none;
-      background-color: vars.$dark-bg-200;
-      border-radius: 0.5rem;
-      padding: 0.7rem 0;
-      font-family: inherit;
-      color: vars.$dark-accent-100;
-      text-decoration: none;
+    h2 {
+      color: vars.$dark-text;
+      font-size: 1.5rem;
       text-align: center;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid vars.$dark-bg-400;
 
-      &:hover,
-      &:active,
-      &.active {
-        border: 1px solid vars.$dark-accent-100;
+      @include mixins.lg {
+        padding-bottom: 3rem;
+        margin-bottom: 3rem;
+      }
+    }
+
+    & > div {
+      @include mixins.flex(column, center, center, 1rem);
+
+      a {
+        width: 100%;
+        border: none;
+        background-color: vars.$dark-bg-200;
+        border-radius: 0.5rem;
+        padding: 0.7rem 0;
+        font-family: inherit;
+        color: vars.$dark-accent-100;
+        text-decoration: none;
+        text-align: center;
+
+        &:hover,
+        &:active,
+        &.active {
+          border: 1px solid vars.$dark-accent-100;
+        }
       }
     }
   }
@@ -301,7 +304,7 @@
     text-align: center;
 
     div:nth-child(1) {
-      @include mixins.flex(row, center, center, 1rem);
+      @include mixins.flex(row, center, center, 0.5rem);
       height: 100%;
       border-bottom: 1px solid vars.$dark-bg-400;
       padding: 1rem;
@@ -316,6 +319,7 @@
         padding: 1rem 0.6rem;
         border-radius: 0.6rem;
         color: vars.$dark-accent;
+        font-size: clamp(0.8rem, 1.3vw, 1rem);
       }
     }
 
@@ -368,8 +372,4 @@
     color: vars.$dark-accent;
     margin-bottom: 1.5rem;
   }
-
-  // div {
-  //   border: 1px solid red;
-  // }
 }
