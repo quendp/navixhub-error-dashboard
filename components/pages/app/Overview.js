@@ -30,6 +30,8 @@ const Overview = () => {
   const [monthStart, setMonthStart] = useState(currentDay);
   const [firstRepDate, setFirstRepDate] = useState(currentDay);
 
+  const [monthlyReports, setMonthlyReports] = useState({});
+
   const { data, error, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_API}?orderBy=id:desc&sizePerPage=999`,
     fetcher
@@ -39,46 +41,66 @@ const Overview = () => {
     const firstRep = data?.results?.total - 1;
     const oldestErrData = data?.results?.data[firstRep].created_at;
     setAllReports(data);
-    handleWeekCard(data?.results?.data);
-    handleMonthCard(data?.results?.data);
+    handleAnalyticsData(data?.results?.data);
+    handleMonthlyReports(data?.results?.data);
     if (data) {
       const firstRepFormat = format(new Date(oldestErrData), "MMM d',' yyyy");
       setFirstRepDate(firstRepFormat);
     }
   }, [data, setAllReports]);
 
-  const handleWeekCard = (dataArray) => {
+  const handleMonthlyReports = (dataArray) => {
+    if (!dataArray) return;
+    console.log(dataArray);
+    let newMonthlyRep = {};
+    for (let i of dataArray) {
+      const monthReported = format(new Date(i.created_at), "MMM yyyy");
+      if (newMonthlyRep.hasOwnProperty(monthReported)) {
+        newMonthlyRep = {
+          ...newMonthlyRep,
+          [monthReported]: newMonthlyRep[monthReported] + 1,
+        };
+      } else {
+        newMonthlyRep = {
+          ...newMonthlyRep,
+          [monthReported]: 1,
+        };
+      }
+    }
+    setMonthlyReports(newMonthlyRep);
+  };
+
+  const handleAnalyticsData = (dataArray) => {
     if (!dataArray) return;
     const latestSunday = previousSunday(new Date());
     const formatLastSun = format(new Date(latestSunday), "MMM d',' yyyy");
+    const firstDayMonth = startOfMonth(new Date());
+    const formatfirstDay = format(new Date(firstDayMonth), "MMM d',' yyyy");
     let thisWeekCount = 0;
+    let isWeekDone = false;
+    let thisMonthCount = 0;
+    let isMonthDone = false;
     for (let i of dataArray) {
       const reportDate = new Date(i.created_at);
-      const isThisWeek = compareAsc(reportDate, latestSunday);
-      if (isThisWeek >= 0) {
-        thisWeekCount++;
-      } else {
-        break;
+      if (!isWeekDone) {
+        const isThisWeek = compareAsc(reportDate, latestSunday);
+        if (isThisWeek >= 0) {
+          thisWeekCount++;
+        } else {
+          isWeekDone = true;
+        }
+      }
+      if (!isMonthDone) {
+        const isThisMonth = compareAsc(reportDate, firstDayMonth);
+        if (isThisMonth >= 0) {
+          thisMonthCount++;
+        } else {
+          isMonthDone = true;
+        }
       }
     }
     setWeekCount(thisWeekCount);
     setWeekStart(formatLastSun);
-  };
-
-  const handleMonthCard = (dataArray) => {
-    if (!dataArray) return;
-    const firstDayMonth = startOfMonth(new Date());
-    const formatfirstDay = format(new Date(firstDayMonth), "MMM d',' yyyy");
-    let thisMonthCount = 0;
-    for (let i of dataArray) {
-      const reportDate = new Date(i.created_at);
-      const isThisMonth = compareAsc(reportDate, firstDayMonth);
-      if (isThisMonth >= 0) {
-        thisMonthCount++;
-      } else {
-        break;
-      }
-    }
     setMonthStart(formatfirstDay);
     setMonthCount(thisMonthCount);
   };
@@ -127,7 +149,7 @@ const Overview = () => {
       </Row>
       <Row>
         <Col xs={12} md={4} className="p-2 p-md-4">
-          <Analytics />
+          <Analytics monthlyReports={monthlyReports} />
         </Col>
         <Col xs={12} md={8} className="p-2 p-md-4">
           <Chart />

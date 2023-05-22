@@ -332,22 +332,37 @@
   .overviewAnalytics {
     p {
       background-color: vars.$dark-bg-100;
-      padding: 1rem;
+      padding: 1rem 2rem;
       border-radius: 1rem;
-      @include mixins.flex(row, space-evenly, center);
+      @include mixins.flex(row, space-between, center);
 
       span {
         @include mixins.flex(row, center, center);
+        font-size: 1rem;
+        width: 100%;
 
         &:nth-child(2) {
-          background-color: rgba(213, 87, 87, 0.533);
-          width: 2rem;
-          height: 2rem;
+          color: vars.$dark-accent;
+          border: 1px solid vars.$dark-bg-400;
           border-radius: 0.5rem;
+          padding: 0.5rem;
         }
 
         &:nth-child(3) {
-          color: vars.$dark-accent;
+          @include mixins.flex(column, center, center);
+          width: 2rem;
+          height: 2rem;
+          border-radius: 0.5rem;
+          font-size: 0.8rem;
+          padding: 1.5rem;
+          margin-left: 1rem;
+
+          &.red {
+            background-color: rgba(213, 87, 87, 0.533);
+          }
+          &.green {
+            background-color: rgba(97, 213, 87, 0.533);
+          }
         }
       }
     }
