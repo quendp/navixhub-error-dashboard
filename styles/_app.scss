@@ -356,6 +356,7 @@
           font-size: 0.8rem;
           padding: 1.5rem;
           margin-left: 1rem;
+          background-color: vars.$dark-bg-400;
 
           &.red {
             background-color: rgba(213, 87, 87, 0.533);
@@ -376,11 +377,20 @@
   }
 
   .reportStatsWrapper {
-    @include mixins.flex(column, center, flex-start);
+    @include mixins.flex(column, flex-start, flex-start);
     padding: 2rem;
     background-color: vars.$dark-bg-100;
     border-radius: 1rem;
     height: 100%;
+
+    p {
+      margin: 0.7rem 0;
+      span {
+        background-color: vars.$dark-bg-300;
+        padding: 0.5rem;
+        border-radius: 0.7rem;
+      }
+    }
   }
 
   h4 {

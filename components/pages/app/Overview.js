@@ -31,6 +31,8 @@ const Overview = () => {
   const [firstRepDate, setFirstRepDate] = useState(currentDay);
 
   const [monthlyReports, setMonthlyReports] = useState({});
+  const [errorByName, setErrorByName] = useState([]);
+  const [errorByRole, setErrorByRole] = useState([]);
 
   const { data, error, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_API}?orderBy=id:desc&sizePerPage=999`,
@@ -43,6 +45,7 @@ const Overview = () => {
     setAllReports(data);
     handleAnalyticsData(data?.results?.data);
     handleMonthlyReports(data?.results?.data);
+    handleParseData(data?.results?.data);
     if (data) {
       const firstRepFormat = format(new Date(oldestErrData), "MMM d',' yyyy");
       setFirstRepDate(firstRepFormat);
@@ -51,7 +54,6 @@ const Overview = () => {
 
   const handleMonthlyReports = (dataArray) => {
     if (!dataArray) return;
-    console.log(dataArray);
     let newMonthlyRep = {};
     for (let i of dataArray) {
       const monthReported = format(new Date(i.created_at), "MMM yyyy");
@@ -103,6 +105,44 @@ const Overview = () => {
     setWeekStart(formatLastSun);
     setMonthStart(formatfirstDay);
     setMonthCount(thisMonthCount);
+  };
+
+  const handleParseData = (dataArray) => {
+    if (!dataArray) return;
+    let errByName = {};
+    let errByRole = {};
+    for (let i of dataArray) {
+      const errDescription = i.error_description;
+      try {
+        const parsedDesc = JSON.parse(errDescription);
+        if (errByName.hasOwnProperty(parsedDesc[0]?.name)) {
+          errByName = {
+            ...errByName,
+            [parsedDesc[0]?.name]: errByName[parsedDesc[0]?.name] + 1,
+          };
+        } else {
+          errByName = {
+            ...errByName,
+            [parsedDesc[0]?.name]: 1,
+          };
+        }
+        if (errByRole.hasOwnProperty(parsedDesc[0]?.role)) {
+          errByRole = {
+            ...errByRole,
+            [parsedDesc[0]?.role]: errByRole[parsedDesc[0]?.role] + 1,
+          };
+        } else {
+          errByRole = {
+            ...errByRole,
+            [parsedDesc[0]?.role]: 1,
+          };
+        }
+      } catch (e) {
+        console.log(errDescription, ":", e.message);
+      }
+    }
+    setErrorByName(errByName);
+    setErrorByRole(errByRole);
   };
 
   if (error)
@@ -157,10 +197,16 @@ const Overview = () => {
       </Row>
       <Row>
         <Col xs={12} md={6} className="p-2 p-md-4">
-          <ReportsStats title={"Most Reports by Name"} />
+          <ReportsStats
+            parsedData={errorByName}
+            title={"Most Reports by Name"}
+          />
         </Col>
         <Col xs={12} md={6} className="p-2 p-md-4">
-          <ReportsStats title={"Most Reports by Role"} />
+          <ReportsStats
+            parsedData={errorByRole}
+            title={"Most Reports by Role"}
+          />
         </Col>
       </Row>
     </Container>

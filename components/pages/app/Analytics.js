@@ -28,8 +28,6 @@ const Analytics = ({ monthlyReports }) => {
     setMonthlyData(newMonthlyReps);
   }, [monthlyReports]);
 
-  console.log(monthlyReports);
-  console.log(monthlyData);
   return (
     <div className="overviewAnalytics">
       <h4>Monthly Analytics</h4>
@@ -41,15 +39,21 @@ const Analytics = ({ monthlyReports }) => {
             <span>
               {data.count} error{data.count > 1 ? "s" : ""}
             </span>
-            <span className={`${data.percentage > 0 ? "red" : "green"}`}>
-              <Image
-                src={`/arrow-${data.percentage <= 0 ? "up" : "down"}-solid.svg`}
-                width={15}
-                height={15}
-                alt="Arrow icon"
-              />
-              {Math.abs(data.percentage)}%
-            </span>
+            {data.percentage != 0 ? (
+              <span className={`${data.percentage > 0 ? "red" : "green"}`}>
+                <Image
+                  src={`/arrow-${
+                    data.percentage <= 0 ? "up" : "down"
+                  }-solid.svg`}
+                  width={15}
+                  height={15}
+                  alt="Arrow icon"
+                />
+                {Math.abs(data.percentage)}%
+              </span>
+            ) : (
+              <span>{Math.abs(data.percentage)}%</span>
+            )}
           </p>
         ))}
     </div>
