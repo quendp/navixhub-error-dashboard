@@ -14,7 +14,10 @@ import format from "date-fns/format";
 
 import Card from "./Card";
 import Analytics from "./Analytics";
-import Chart from "./Chart";
+
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("./Chart"), { ssr: false });
+
 import ReportsStats from "./ReportsStats";
 import { useAllReportsStore } from "@/store/store";
 import { fetcher } from "@/utils/fetcher";
@@ -192,7 +195,7 @@ const Overview = () => {
           <Analytics monthlyReports={monthlyReports} />
         </Col>
         <Col xs={12} md={8} className="p-2 p-md-4">
-          <Chart />
+          <Chart reports={monthlyReports} />
         </Col>
       </Row>
       <Row>
