@@ -17,6 +17,12 @@ const sortListMethod = (set) => ({
   setSortMethod: (action) => set((state) => ({ sortMethod: action })),
 });
 
+const api = (set) => ({
+  api: process.env.NEXT_PUBLIC_TEST1,
+  setApi: (action) => set((state) => ({ api: action })),
+});
+
 export const useReportsTableStore = create(reportsTableStore);
 export const useAllReportsStore = create(allReportsStore);
 export const useSortListMethod = create(sortListMethod);
+export const useApi = create(api);

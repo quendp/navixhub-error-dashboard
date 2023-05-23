@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import { useApi } from "@/store/store";
 
 const inter = Inter({ subsets: ["latin"] });
 const Reports = () => {
@@ -12,23 +13,21 @@ const Reports = () => {
   const id = router.query.report;
 
   const [errorDescription, setErrorDescription] = useState("");
+  const api = useApi((state) => state.api);
 
   // get report based on the given url params
   const {
     data: errorReport,
     error,
     isLoading,
-  } = useSWR(`${process.env.NEXT_PUBLIC_API}/${id}`, fetcher);
+  } = useSWR(`${api}/${id}`, fetcher);
 
   // get latest report for navigation data
   const {
     data: latestReport,
     error: latestReportError,
     isLoading: latestReportLoading,
-  } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}?orderBy=id:desc&sizePerPage=1`,
-    fetcher
-  );
+  } = useSWR(`${api}?orderBy=id:desc&sizePerPage=1`, fetcher);
 
   useEffect(() => {
     if (errorReport) {

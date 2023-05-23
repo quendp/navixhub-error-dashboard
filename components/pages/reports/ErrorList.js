@@ -2,7 +2,7 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
-import { useReportsTableStore, useSortListMethod } from "@/store/store";
+import { useApi, useReportsTableStore, useSortListMethod } from "@/store/store";
 import { fetcher } from "@/utils/fetcher";
 import ErrorItems from "./ErrorItems";
 import Pagination from "./Pagination";
@@ -41,14 +41,13 @@ const ErrorList = () => {
   const reports = useReportsTableStore((state) => state.reports);
   const setReports = useReportsTableStore((state) => state.setReports);
 
+  const api = useApi((state) => state.api);
+
   const {
     data: fetchedReports,
     error,
     isLoading,
-  } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}?orderBy=${sortBy}&page=${currentPage}`,
-    fetcher
-  );
+  } = useSWR(`${api}?orderBy=${sortBy}&page=${currentPage}`, fetcher);
 
   useEffect(() => {
     setReports(fetchedReports);
@@ -78,7 +77,7 @@ const ErrorList = () => {
         <Image src="/loader.svg" width={30} height={30} alt="loader image" />
       </p>
     );
-  if (!reports) {
+  if (!reports || fetchedReports?.results?.data?.length === 0) {
     return <p>No reports found.</p>;
   }
 

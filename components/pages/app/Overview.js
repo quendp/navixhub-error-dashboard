@@ -19,12 +19,13 @@ import dynamic from "next/dynamic";
 const Chart = dynamic(() => import("./Chart"), { ssr: false });
 
 import ReportsStats from "./ReportsStats";
-import { useAllReportsStore } from "@/store/store";
+import { useAllReportsStore, useApi } from "@/store/store";
 import { fetcher } from "@/utils/fetcher";
 
 const Overview = () => {
   const allReports = useAllReportsStore((state) => state.allReports);
   const setAllReports = useAllReportsStore((state) => state.setAllReports);
+  const api = useApi((state) => state.api);
 
   const currentDay = format(new Date(), "MMM d',' yyyy");
   const [weekCount, setWeekCount] = useState(0);
@@ -38,18 +39,18 @@ const Overview = () => {
   const [errorByRole, setErrorByRole] = useState([]);
 
   const { data, error, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}?orderBy=id:desc&sizePerPage=999`,
+    `${api}?orderBy=id:desc&sizePerPage=999`,
     fetcher
   );
 
   useEffect(() => {
-    const firstRep = data?.results?.total - 1;
-    const oldestErrData = data?.results?.data[firstRep].created_at;
-    setAllReports(data);
-    handleAnalyticsData(data?.results?.data);
-    handleMonthlyReports(data?.results?.data);
-    handleParseData(data?.results?.data);
-    if (data) {
+    if (data?.results?.data?.length > 0) {
+      setAllReports(data);
+      const firstRep = data?.results?.total - 1;
+      const oldestErrData = data?.results?.data[firstRep]?.created_at;
+      handleAnalyticsData(data?.results?.data);
+      handleMonthlyReports(data?.results?.data);
+      handleParseData(data?.results?.data);
       const firstRepFormat = format(new Date(oldestErrData), "MMM d',' yyyy");
       setFirstRepDate(firstRepFormat);
     }
@@ -159,7 +160,7 @@ const Overview = () => {
         <Image src="/loader.svg" width={30} height={30} alt="loader image" />
       </Container>
     );
-  if (!allReports) {
+  if (!allReports || data?.results?.data?.length === 0) {
     return <p>No reports found.</p>;
   }
   return (

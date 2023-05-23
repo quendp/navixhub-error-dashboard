@@ -46,24 +46,6 @@
       }
       padding: 0 1rem;
 
-      .sortList {
-        width: 100%;
-        max-width: 20rem;
-        flex-wrap: wrap;
-        @include mixins.flex(row, center, center, 1rem);
-
-        .sortListItem__control {
-          padding: 0.5rem 1rem;
-          border-radius: 0.7rem;
-          background-color: vars.$dark-bg-200;
-          border: none;
-
-          .sortListItem__single-value {
-            color: vars.$dark-text;
-          }
-        }
-      }
-
       .listHeaderDetails {
         @include mixins.flex(column, center, center, 0.3rem);
         margin: 0.8rem 0;
@@ -143,6 +125,28 @@
       @include mixins.md {
         @include mixins.flex(row, center, center, 1rem);
       }
+    }
+  }
+}
+
+.sortList {
+  width: 100%;
+  max-width: 20rem;
+  flex-wrap: wrap;
+  @include mixins.flex(row, center, center, 1rem);
+
+  label {
+    color: vars.$dark-text;
+  }
+
+  .sortListItem__control {
+    padding: 0.2rem 1rem;
+    border-radius: 0.7rem;
+    background-color: vars.$dark-bg-200;
+    border: none;
+
+    .sortListItem__single-value {
+      color: vars.$dark-text;
     }
   }
 }
@@ -252,6 +256,10 @@
       margin-bottom: 0;
     }
 
+    .sortList {
+      max-width: 100%;
+    }
+
     h2 {
       color: vars.$dark-text;
       font-size: 1.5rem;
@@ -266,8 +274,9 @@
       }
     }
 
-    & > div {
+    .navMenu {
       @include mixins.flex(column, center, center, 1rem);
+      margin: 5rem 0 0 0;
 
       a {
         width: 100%;
