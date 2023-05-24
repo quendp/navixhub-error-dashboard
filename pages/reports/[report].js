@@ -61,9 +61,9 @@ const Reports = () => {
       <div className="errorContent">
         <div className="contentHeader">
           <span>{errorReport.results?.id || "N/A"}</span>
-          <Link href={`/reports`}>
-            <button> Go back </button>
-          </Link>
+          <a>
+            <button onClick={() => router.back()}> Go back </button>
+          </a>
         </div>
         <div className="contentColumn">
           <div>

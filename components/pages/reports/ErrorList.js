@@ -31,9 +31,7 @@ const ErrorList = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const page = searchParams.get("page");
-  const [currentPage, setCurrentPage] = useState(() =>
-    page && !isNaN(+page) ? page : 1
-  );
+  const [currentPage, setCurrentPage] = useState(page);
 
   const sortBy = useSortListMethod((state) => state.sortMethod);
   const setSortBy = useSortListMethod((state) => state.setSortMethod);
@@ -51,7 +49,8 @@ const ErrorList = () => {
 
   useEffect(() => {
     setReports(fetchedReports);
-  }, [fetchedReports, setReports]);
+    setCurrentPage(page);
+  }, [page, fetchedReports, setReports]);
 
   const createQueryString = useCallback(
     (name, value) => {
@@ -64,7 +63,6 @@ const ErrorList = () => {
   );
 
   const changePageHandler = (pageNumber) => {
-    setCurrentPage(pageNumber);
     router.push(
       pathname + "?" + createQueryString("page", pageNumber.toString())
     );
