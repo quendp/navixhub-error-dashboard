@@ -7,7 +7,7 @@ const Reports = () => {
   return (
     <>
       <Head>
-        <title> Dashboard | Error Reports </title>
+        <title> Error Reports List </title>
         <meta
           name="description"
           content="A dashboard for project error reports."

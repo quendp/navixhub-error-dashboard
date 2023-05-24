@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { useApi } from "@/store/store";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 const Reports = () => {
@@ -57,101 +58,112 @@ const Reports = () => {
   const timeFormat = dateFormat[1].split(":");
 
   return (
-    <div className={`${inter.className} errorDetails mainContent`}>
-      <div className="errorContent">
-        <div className="contentHeader">
-          <span>{errorReport.results?.id || "N/A"}</span>
-          <a>
-            <button onClick={() => router.back()}> Go back </button>
-          </a>
-        </div>
-        <div className="contentColumn">
-          <div>
+    <>
+      <Head>
+        <title> Error Report #{id} </title>
+        <meta
+          name="description"
+          content="A dashboard for project error reports."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className={`${inter.className} errorDetails mainContent`}>
+        <div className="errorContent">
+          <div className="contentHeader">
+            <span>{errorReport.results?.id || "N/A"}</span>
+            <a>
+              <button onClick={() => router.back()}> Go back </button>
+            </a>
+          </div>
+          <div className="contentColumn">
+            <div>
+              <p>
+                Name: <span>{errorDescription[0]?.name || "N/A"}</span>
+              </p>
+              <p>
+                Role: <span>{errorDescription[0]?.role || "N/A"}</span>
+              </p>
+            </div>
+            <div>
+              <p>
+                Date: <span> {dateFormat[0] || "N/A"}</span>
+              </p>
+              <p>
+                Time:{" "}
+                <span>
+                  {" "}
+                  {timeFormat[0]}:{timeFormat[1] || "N/A"}
+                </span>
+              </p>
+            </div>
+          </div>
+          <div className="contentColumn">
+            <div>
+              <p>
+                Clinician ID:{" "}
+                <span>{errorDescription[0]?.clinician_id || "N/A"}</span>
+              </p>
+              <p>
+                OS: <span>{errorDescription[0]?.os || "N/A"}</span>
+              </p>
+            </div>
+            <div>
+              <p>
+                Browser:{" "}
+                <span>
+                  {errorDescription[0]?.browser?.name || "N/A"} v.
+                  {errorDescription[0]?.browser?.version || "N/A"}
+                </span>
+              </p>
+              <p>
+                Resolution:{" "}
+                <span>{errorDescription[0]?.resolution || "N/A"}</span>
+              </p>
+            </div>
+          </div>
+          <div className="contentRow">
             <p>
-              Name: <span>{errorDescription[0]?.name || "N/A"}</span>
+              Remarks: <span>{errorDescription[1] ?? "N/A"}</span>
             </p>
             <p>
-              Role: <span>{errorDescription[0]?.role || "N/A"}</span>
+              URL: <span>{errorDescription[0]?.url || "N/A"}</span>
+            </p>
+            <p>
+              Subdomain: <span>{errorDescription[0]?.subdomain || "N/A"}</span>
+            </p>
+            <p>
+              Timezone: <span>{errorDescription[0]?.timezone || "N/A"}</span>
             </p>
           </div>
-          <div>
-            <p>
-              Date: <span> {dateFormat[0] || "N/A"}</span>
-            </p>
-            <p>
-              Time:{" "}
-              <span>
-                {" "}
-                {timeFormat[0]}:{timeFormat[1] || "N/A"}
-              </span>
+          <div className="contentRow">
+            <p>Error Info (Component Stack): </p>
+            <p className="contentErrorInfo">
+              {errorDescription[0]?.errorInfo?.componentStack || "N/A"}
             </p>
           </div>
+          {!latestReportError && !latestReportLoading ? (
+            <div className="reportNavBtns">
+              <Link href={`/reports/${+id === 1 ? id : +id - 1}`}>
+                <button disabled={+id === 1}> Prev </button>
+              </Link>
+              <Link
+                href={`/reports/${
+                  +latestReport.results.last_page === +id ? id : +id + 1
+                }`}
+              >
+                <button disabled={+latestReport.results.last_page === +id}>
+                  {" "}
+                  Next{" "}
+                </button>
+              </Link>
+            </div>
+          ) : (
+            " "
+          )}
         </div>
-        <div className="contentColumn">
-          <div>
-            <p>
-              Clinician ID:{" "}
-              <span>{errorDescription[0]?.clinician_id || "N/A"}</span>
-            </p>
-            <p>
-              OS: <span>{errorDescription[0]?.os || "N/A"}</span>
-            </p>
-          </div>
-          <div>
-            <p>
-              Browser:{" "}
-              <span>
-                {errorDescription[0]?.browser?.name || "N/A"} v.
-                {errorDescription[0]?.browser?.version || "N/A"}
-              </span>
-            </p>
-            <p>
-              Resolution:{" "}
-              <span>{errorDescription[0]?.resolution || "N/A"}</span>
-            </p>
-          </div>
-        </div>
-        <div className="contentRow">
-          <p>
-            Remarks: <span>{errorDescription[1] ?? "N/A"}</span>
-          </p>
-          <p>
-            URL: <span>{errorDescription[0]?.url || "N/A"}</span>
-          </p>
-          <p>
-            Subdomain: <span>{errorDescription[0]?.subdomain || "N/A"}</span>
-          </p>
-          <p>
-            Timezone: <span>{errorDescription[0]?.timezone || "N/A"}</span>
-          </p>
-        </div>
-        <div className="contentRow">
-          <p>Error Info (Component Stack): </p>
-          <p className="contentErrorInfo">
-            {errorDescription[0]?.errorInfo?.componentStack || "N/A"}
-          </p>
-        </div>
-        {!latestReportError && !latestReportLoading ? (
-          <div className="reportNavBtns">
-            <Link href={`/reports/${+id === 1 ? id : +id - 1}`}>
-              <button disabled={+id === 1}> Prev </button>
-            </Link>
-            <Link
-              href={`/reports/${
-                +latestReport.results.last_page === +id ? id : +id + 1
-              }`}
-            >
-              <button disabled={+latestReport.results.last_page === +id}>
-                {" "}
-                Next{" "}
-              </button>
-            </Link>
-          </div>
-        ) : (
-          " "
-        )}
       </div>
-    </div>
+    </>
   );
 };
 
