@@ -2,9 +2,8 @@
 @use "./mixins" as mixins;
 
 .mainContent {
-  @include mixins.flex(column, center, center);
+  @include mixins.flex(column, center, center, 3rem);
   color: vars.$dark-text;
-  gap: 1rem;
 
   button {
     border: none;
