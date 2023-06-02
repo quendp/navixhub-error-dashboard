@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import Select from "react-select";
 import { useApi } from "@/store/store";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 const sortOptions = [
@@ -31,9 +32,10 @@ const Sidebar = () => {
   const setApi = useApi((state) => state.setApi);
 
   const pathname = usePathname();
+  const router = useRouter();
   return (
     <div className={`${inter.className} sidebar`}>
-      <h2>Naxi Hub Error Dashboard</h2>
+      <h2>Navix Hub Error Dashboard</h2>
       <div className="sortList">
         <label htmlFor="sortApi">Environment : </label>
         <Select
@@ -50,7 +52,7 @@ const Sidebar = () => {
           styles={sortStyles}
           instanceId="selectApi"
           onChange={(e) => {
-            console.log(e.value);
+            router.push("/");
             setApi(e.value);
           }}
         />
