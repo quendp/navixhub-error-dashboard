@@ -52,8 +52,10 @@ const Sidebar = () => {
           styles={sortStyles}
           instanceId="selectApi"
           onChange={(e) => {
-            router.push("/");
-            setApi(e.value);
+            router
+              .push("/")
+              .then(() => setApi(e.value))
+              .catch((e) => console.log(e));
           }}
         />
       </div>
