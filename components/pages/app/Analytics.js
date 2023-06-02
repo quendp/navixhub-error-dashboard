@@ -33,29 +33,32 @@ const Analytics = ({ monthlyReports }) => {
       <h4>Monthly Analytics</h4>
 
       {monthlyData.length > 0 &&
-        monthlyData.map((data) => (
-          <p key={data.month}>
-            <span> {data.month} </span>
-            <span>
-              {data.count} error{data.count > 1 ? "s" : ""}
-            </span>
-            {data.percentage != 0 ? (
-              <span className={`${data.percentage > 0 ? "red" : "green"}`}>
-                <Image
-                  src={`/arrow-${
-                    data.percentage <= 0 ? "up" : "down"
-                  }-solid.svg`}
-                  width={15}
-                  height={15}
-                  alt="Arrow icon"
-                />
-                {Math.abs(data.percentage)}%
-              </span>
-            ) : (
-              <span>{Math.abs(data.percentage)}%</span>
-            )}
-          </p>
-        ))}
+        monthlyData.map(
+          (data, idx) =>
+            idx < 5 && (
+              <p key={data.month}>
+                <span> {data.month} </span>
+                <span>
+                  {data.count} error{data.count > 1 ? "s" : ""}
+                </span>
+                {data.percentage != 0 ? (
+                  <span className={`${data.percentage > 0 ? "red" : "green"}`}>
+                    <Image
+                      src={`/arrow-${
+                        data.percentage <= 0 ? "up" : "down"
+                      }-solid.svg`}
+                      width={15}
+                      height={15}
+                      alt="Arrow icon"
+                    />
+                    {Math.abs(data.percentage)}%
+                  </span>
+                ) : (
+                  <span>{Math.abs(data.percentage)}%</span>
+                )}
+              </p>
+            )
+        )}
     </div>
   );
 };
