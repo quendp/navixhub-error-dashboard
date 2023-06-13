@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { useApi } from "@/store/store";
+import { useApi, useSortListMethod } from "@/store/store";
 import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,7 +30,10 @@ const Reports = () => {
     isLoading: latestReportLoading,
   } = useSWR(`${api}?orderBy=id:desc&sizePerPage=1`, fetcher);
 
+  const sortBy = useSortListMethod((state) => state.sortMethod);
+
   useEffect(() => {
+    console.log(sortBy);
     if (errorReport) {
       try {
         const errorJson = JSON.parse(errorReport?.results?.error_description);
@@ -173,18 +176,19 @@ const Reports = () => {
           </div>
           {!latestReportError && !latestReportLoading ? (
             <div className="reportNavBtns">
-              <Link href={`/reports/${+id === 1 ? id : +id - 1}`}>
-                <button disabled={+id === 1}> Prev </button>
-              </Link>
               <Link
+                style={{order: `${sortBy === "id:desc" ? "0" : "1"}`}}
                 href={`/reports/${
                   +latestReport.results.last_page === +id ? id : +id + 1
                 }`}
               >
                 <button disabled={+latestReport.results.last_page === +id}>
                   {" "}
-                  Next{" "}
+                  {sortBy === "id:desc" ? "Prev" : "Next"} {" "}
                 </button>
+              </Link>
+              <Link href={`/reports/${+id === 1 ? id : +id - 1}`}>
+                <button disabled={+id === 1}> {sortBy === "id:desc" ? "Next" : "Prev"} {" "} </button>
               </Link>
             </div>
           ) : (
