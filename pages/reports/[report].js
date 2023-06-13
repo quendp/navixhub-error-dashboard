@@ -34,6 +34,7 @@ const Reports = () => {
     if (errorReport) {
       try {
         const errorJson = JSON.parse(errorReport?.results?.error_description);
+        console.log("errJson", errorJson);
         setErrorDescription(errorJson);
       } catch (e) {
         setErrorDescription(errorReport?.results?.error_description);
@@ -122,10 +123,35 @@ const Reports = () => {
               </p>
             </div>
           </div>
+          <div className="contentColumn">
+            <div>
+              <p>
+                Error Name:{" "}
+                <span>{errorDescription[0]?.error?.name || "N/A"}</span>
+              </p>
+              <p>
+                Error Message:{" "}
+                <span>{errorDescription[0]?.error?.message || "N/A"}</span>
+              </p>
+            </div>
+            <div>
+              <p>
+                Line Number:{" "}
+                <span>{errorDescription[0]?.error?.lineNumber || "N/A"}</span>
+              </p>
+              <p>
+                Column Number:{" "}
+                <span>{errorDescription[0]?.error?.columnNumber || "N/A"}</span>
+              </p>
+            </div>
+          </div>
           <div className="contentRow">
             <p>
-              Remarks: <span>{errorDescription[1] ?? "N/A"}</span>
+              File Name:{" "}
+              <span>{errorDescription[0]?.error?.fileName || "N/A"}</span>
             </p>
+          </div>
+          <div className="contentRow">
             <p>
               URL: <span>{errorDescription[0]?.url || "N/A"}</span>
             </p>
@@ -134,6 +160,9 @@ const Reports = () => {
             </p>
             <p>
               Timezone: <span>{errorDescription[0]?.timezone || "N/A"}</span>
+            </p>
+            <p>
+              Remarks: <span>{errorDescription[1] ?? "N/A"}</span>
             </p>
           </div>
           <div className="contentRow">

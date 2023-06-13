@@ -3,7 +3,7 @@ import React from "react";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import Select from "react-select";
-import { useApi } from "@/store/store";
+import { useApi, useVersion } from "@/store/store";
 import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -33,9 +33,16 @@ const Sidebar = () => {
 
   const pathname = usePathname();
   const router = useRouter();
+
+  const version = useVersion((state) => state.version);
+
   return (
     <div className={`${inter.className} sidebar`}>
-      <h2>Navix Hub Error Dashboard</h2>
+      <h2>
+        Navix Hub Error Dashboard {" "}
+        <span>Version: {version}</span>
+      </h2>
+
       <div className="sortList">
         <label htmlFor="sortApi">Environment : </label>
         <Select

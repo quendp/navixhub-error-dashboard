@@ -60,8 +60,9 @@
         }
 
         @include mixins.md {
-          @include mixins.flex(row, space-between, center, 2rem);
+          @include mixins.flex(row, flex-end, center, 2rem);
           margin: 0;
+          width: 200px;
         }
       }
     }
@@ -271,8 +272,15 @@
       border-bottom: 1px solid vars.$dark-bg-400;
 
       @include mixins.lg {
-        padding-bottom: 3rem;
+        padding-bottom: 1rem;
         margin-bottom: 3rem;
+      }
+
+      span {
+        display: block;
+        font-size: 1rem;
+        padding: 1rem 0;
+        color: vars.$dark-accent-100;
       }
     }
 

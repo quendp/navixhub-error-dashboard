@@ -22,7 +22,13 @@ const api = (set) => ({
   setApi: (action) => set((state) => ({ api: action })),
 });
 
+const version = (set) => ({
+  version: "",
+  setVersion: (action) => set((state) => ({ version: action })),
+});
+
 export const useReportsTableStore = create(reportsTableStore);
 export const useAllReportsStore = create(allReportsStore);
 export const useSortListMethod = create(sortListMethod);
 export const useApi = create(api);
+export const useVersion = create(version);

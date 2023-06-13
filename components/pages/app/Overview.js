@@ -19,13 +19,14 @@ import dynamic from "next/dynamic";
 const Chart = dynamic(() => import("./Chart"), { ssr: false });
 
 import ReportsStats from "./ReportsStats";
-import { useAllReportsStore, useApi } from "@/store/store";
+import { useAllReportsStore, useApi, useVersion } from "@/store/store";
 import { fetcher } from "@/utils/fetcher";
 
 const Overview = () => {
   const allReports = useAllReportsStore((state) => state.allReports);
   const setAllReports = useAllReportsStore((state) => state.setAllReports);
   const api = useApi((state) => state.api);
+  const setVersion = useVersion((state) => state.setVersion);
 
   const currentDay = format(new Date(), "MMM d',' yyyy");
   const [weekCount, setWeekCount] = useState(0);
@@ -53,8 +54,9 @@ const Overview = () => {
       handleParseData(data?.results?.data);
       const firstRepFormat = format(new Date(oldestErrData), "MMM d',' yyyy");
       setFirstRepDate(firstRepFormat);
+      setVersion(data?.version);
     }
-  }, [data, setAllReports]);
+  }, [data, setAllReports, setVersion]);
 
   const handleMonthlyReports = (dataArray) => {
     if (!dataArray) return;
@@ -165,6 +167,16 @@ const Overview = () => {
   }
   return (
     <Container fluid className="overviewWrapper">
+      {/* <div style={{ width: "100%", height: "650px", overflow: "hidden", borderRadius: "15px"}}>
+        <iframe
+          width="100%"
+          height="700px"
+          src="https://lookerstudio.google.com/embed/reporting/b490c4da-a572-4a38-b05d-e6ea18b46733/page/c5xTD"
+          frameBorder="0"
+          style={{ border: "0"}}
+          allowFullScreen
+        ></iframe>
+      </div> */}
       <Row>
         <Col xs={12} md={4} className="p-2 p-md-4">
           <Card

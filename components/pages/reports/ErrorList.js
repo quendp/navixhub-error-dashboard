@@ -2,7 +2,7 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
-import { useApi, useReportsTableStore, useSortListMethod } from "@/store/store";
+import { useApi, useReportsTableStore, useSortListMethod, useVersion } from "@/store/store";
 import { fetcher } from "@/utils/fetcher";
 import ErrorItems from "./ErrorItems";
 import Pagination from "./Pagination";
@@ -35,6 +35,7 @@ const ErrorList = () => {
 
   const sortBy = useSortListMethod((state) => state.sortMethod);
   const setSortBy = useSortListMethod((state) => state.setSortMethod);
+  const setVersion = useVersion((state) => state.setVersion);
 
   const reports = useReportsTableStore((state) => state.reports);
   const setReports = useReportsTableStore((state) => state.setReports);
@@ -50,7 +51,8 @@ const ErrorList = () => {
   useEffect(() => {
     setReports(fetchedReports);
     setCurrentPage(page);
-  }, [page, fetchedReports, setReports]);
+    setVersion(fetchedReports?.version);
+  }, [page, fetchedReports, setReports, setVersion]);
 
   const createQueryString = useCallback(
     (name, value) => {
@@ -103,7 +105,6 @@ const ErrorList = () => {
           />
         </div>
         <div className="listHeaderDetails">
-          <span>Version: {reports.version}</span>
           <span>Total Errors: {reports.results.total}</span>
         </div>
       </div>
